@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Inicio";
+}
+<div class="dashboard-container">
+    <div class="page-header">
+        <h2>Panel principal</h2>
+        <p>Bienvenida al sistema de inventario de la tienda.</p>
+    </div>
+
+    <div class="cards-grid">
+        <div class="dashboard-card">
+            <div class="card-title">Productos</div>
+            <div class="card-text">
+                Consulta, administra y visualiza el inventario registrado.
+            </div>
+            <a asp-controller="Producto" asp-action="VerProducto" class="card-link">
+                Ir a productos
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-title">Inventario</div>
+            <div class="card-text">
+                Lleva control del stock disponible de cada producto.
+            </div>
+            <span class="card-badge">Próximamente</span>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-title">Categorías</div>
+            <div class="card-text">
+                Organiza los productos por categoría para una mejor gestión.
+            </div>
+            <span class="card-badge">Próximamente</span>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-title">Proveedores</div>
+            <div class="card-text">
+                Administra la información de proveedores vinculados al inventario.
+            </div>
+            <span class="card-badge">Próximamente</span>
+        </div>
+    </div>
+
+    <div class="panel-box mt-4">
+        <h3 class="panel-title">Acceso rápido</h3>
+        <p class="panel-text">
+            Usa el menú lateral para navegar por el sistema. La opción principal habilitada actualmente es
+            <strong>Ver productos</strong>.
+        </p>
+
+        <a asp-controller="Producto" asp-action="VerProducto" class="btn-main">
+            Ver productos
+        </a>
+    </div>
+</div>
+                       

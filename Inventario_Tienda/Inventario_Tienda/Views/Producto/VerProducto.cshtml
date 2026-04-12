@@ -1,0 +1,67 @@
+﻿@model List<Inventario_Tienda.Models.Producto>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Ver listado de productos";
+}
+
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h2>Productos registrados</h2>
+        <p>Consulta la lista de productos almacenados en el sistema.</p>
+    </div>
+
+    <a asp-controller="Producto" asp-action="Crear" class="btn-main">
+        Crear nuevo producto
+    </a>
+</div>
+
+<div class="table-container mt-4">
+    <table class="table table-bordered table-hover align-middle">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio Compra</th>
+                <th>Precio Venta</th>
+                <th>Stock</th>
+                <th>Estado</th>
+                <th>Categoría</th>
+                <th>Proveedor</th>
+                <th style="width: 180px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdProducto</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Descripcion</td>
+                    <td>@item.PrecioCompra</td>
+                    <td>@item.PrecioVenta</td>
+                    <td>@item.StockActual</td>
+                    <td>@(item.Estado ? "Activo" : "Inactivo")</td>
+                    <td>@(item.Categoria != null ? item.Categoria.Nombre : "")</td>
+                    <td>@(item.Proveedor != null ? item.Proveedor.Nombre : "")</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <a asp-action="Editar" asp-route-id="@item.IdProducto" class="btn btn-warning btn-sm">
+                                Editar
+                            </a>
+
+                            <form asp-action="Eliminar" asp-route-id="@item.IdProducto" method="post"
+                                  onsubmit="return confirm('¿Desea eliminar este producto?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

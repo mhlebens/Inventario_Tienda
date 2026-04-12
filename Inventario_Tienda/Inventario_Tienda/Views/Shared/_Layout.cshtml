@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Inventario_Tienda</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>Inventario</h2>
+                <p>Tienda</p>
+            </div>
+
+            <nav class="sidebar-menu">
+                <div class="menu-section">Principal</div>
+
+                <a asp-controller="Home" asp-action="Index" class="menu-item">
+                    <span>Inicio</span>
+                </a>
+
+                <a asp-controller="Producto" asp-action="VerProducto" class="menu-item">
+                    <span>Ver productos</span>
+                </a>
+            </nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="topbar">
+                <div>
+                    <h1 class="topbar-title">@ViewData["Title"]</h1>
+                    <span class="topbar-subtitle">Sistema de inventario</span>
+                </div>
+            </header>
+
+            <main class="content-area">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
