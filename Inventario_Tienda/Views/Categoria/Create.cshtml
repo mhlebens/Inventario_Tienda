@@ -1,0 +1,14 @@
+﻿@model Inventario_Tienda.Models.Categoria
+
+<div class="container mt-4">
+    <h4>Crear una nueva categoria</h4>
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Nombre" class="control-label"></label>
+            <input asp-for="Nombre" class="form-control" />
+
+        </div>
+        <button type="submit" class="btn btn-success mt-3">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary mt-3">Regresar</a>
+    </form>
+</div>

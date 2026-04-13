@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Inventario_Tienda.Models.Categoria>
+
+<div class="container mt-4">
+    <h2>Gestión de las categorías</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">Categoría nueva</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ID</td>
+                    <td>@item.Nombre</td>
+                    <td>
+                        <form asp-action="Delete" asp-route-id="@item.ID" method="post" onsubmit="return confirm('¿Seguro de querer eliminar?')">
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

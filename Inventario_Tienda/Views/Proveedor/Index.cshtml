@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Inventario_Tienda.Models.Proveedor>
+
+<div class="container mt-4">
+    <h2>Gestión de los proveedores</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Contacto</th>
+                <th>Teléfono</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Contacto</td>
+                    <td>@item.Telefono</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
