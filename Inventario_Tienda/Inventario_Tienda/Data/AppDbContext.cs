@@ -33,13 +33,8 @@ namespace Inventario_Tienda.Data
                 entity.Property(e => e.IdCategoria).HasColumnName("idCategoria");
                 entity.Property(e => e.IdProveedor).HasColumnName("idProveedor");
 
-                entity.HasOne(e => e.Categoria)
-                      .WithMany()
-                      .HasForeignKey(e => e.IdCategoria);
-
-                entity.HasOne(e => e.Proveedor)
-                      .WithMany()
-                      .HasForeignKey(e => e.IdProveedor);
+                entity.Ignore(e => e.NombreCategoria);
+                entity.Ignore(e => e.NombreProveedor);
             });
 
             modelBuilder.Entity<Categoria>(entity =>

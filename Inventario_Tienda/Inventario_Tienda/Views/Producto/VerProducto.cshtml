@@ -16,6 +16,20 @@
     </a>
 </div>
 
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["Mensaje"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mt-3">
+        @TempData["Error"]
+    </div>
+}
+
 <div class="table-container mt-4">
     <table class="table table-bordered table-hover align-middle">
         <thead>
@@ -29,7 +43,7 @@
                 <th>Estado</th>
                 <th>Categoría</th>
                 <th>Proveedor</th>
-                <th style="width: 180px;">Acciones</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -43,8 +57,8 @@
                     <td>@item.PrecioVenta</td>
                     <td>@item.StockActual</td>
                     <td>@(item.Estado ? "Activo" : "Inactivo")</td>
-                    <td>@(item.Categoria != null ? item.Categoria.Nombre : "")</td>
-                    <td>@(item.Proveedor != null ? item.Proveedor.Nombre : "")</td>
+                    <td>@item.NombreCategoria</td>
+                    <td>@item.NombreProveedor</td>
                     <td>
                         <div class="d-flex gap-2">
                             <a asp-action="Editar" asp-route-id="@item.IdProducto" class="btn btn-warning btn-sm">

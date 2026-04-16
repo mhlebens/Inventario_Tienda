@@ -17,7 +17,7 @@ namespace Inventario_Tienda.Models
         public int? IdCategoria { get; set; }
         public int? IdProveedor { get; set; }
 
-        public Categoria? Categoria { get; set; }
-        public Proveedor? Proveedor { get; set; }
+        public string? NombreCategoria { get; set; }
+        public string? NombreProveedor { get; set; }
     }
 }
