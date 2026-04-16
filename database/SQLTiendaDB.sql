@@ -217,3 +217,132 @@ BEGIN
     WHERE idProveedor = @idProveedor;
 END;
 GO
+
+
+/*Procedimientos de Productos*/
+CREATE OR ALTER PROCEDURE spProductoCrear
+    @nombre VARCHAR(100),
+    @descripcion VARCHAR(255) = NULL,
+    @precioCompra DECIMAL(10,2),
+    @precioVenta DECIMAL(10,2),
+    @stockActual INT,
+    @estado BIT,
+    @idCategoria INT = NULL,
+    @idProveedor INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Producto
+    (
+        nombre,
+        descripcion,
+        precioCompra,
+        precioVenta,
+        stockActual,
+        estado,
+        idCategoria,
+        idProveedor
+    )
+    VALUES
+    (
+        @nombre,
+        @descripcion,
+        @precioCompra,
+        @precioVenta,
+        @stockActual,
+        @estado,
+        @idCategoria,
+        @idProveedor
+    );
+END;
+GO
+
+
+CREATE OR ALTER PROCEDURE spProductoActualizar
+    @idProducto INT,
+    @nombre VARCHAR(100),
+    @descripcion VARCHAR(255) = NULL,
+    @precioCompra DECIMAL(10,2),
+    @precioVenta DECIMAL(10,2),
+    @stockActual INT,
+    @estado BIT,
+    @idCategoria INT = NULL,
+    @idProveedor INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE Producto
+    SET
+        nombre = @nombre,
+        descripcion = @descripcion,
+        precioCompra = @precioCompra,
+        precioVenta = @precioVenta,
+        stockActual = @stockActual,
+        estado = @estado,
+        idCategoria = @idCategoria,
+        idProveedor = @idProveedor
+    WHERE idProducto = @idProducto;
+END;
+GO
+
+
+CREATE OR ALTER PROCEDURE spProductoEliminar
+    @idProducto INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DELETE FROM Producto
+    WHERE idProducto = @idProducto;
+END;
+GO
+
+USE TiendaDB;
+GO
+
+CREATE OR ALTER PROCEDURE spProductoListar
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        p.idProducto AS IdProducto,
+        p.nombre AS Nombre,
+        p.descripcion AS Descripcion,
+        p.precioCompra AS PrecioCompra,
+        p.precioVenta AS PrecioVenta,
+        p.stockActual AS StockActual,
+        p.estado AS Estado,
+        p.idCategoria AS IdCategoria,
+        p.idProveedor AS IdProveedor,
+        c.nombre AS NombreCategoria,
+        pr.nombre AS NombreProveedor
+    FROM Producto p
+    LEFT JOIN Categoria c ON p.idCategoria = c.idCategoria
+    LEFT JOIN Proveedor pr ON p.idProveedor = pr.idProveedor;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE spProductoObtenerPorId
+    @idProducto INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        idProducto AS IdProducto,
+        nombre AS Nombre,
+        descripcion AS Descripcion,
+        precioCompra AS PrecioCompra,
+        precioVenta AS PrecioVenta,
+        stockActual AS StockActual,
+        estado AS Estado,
+        idCategoria AS IdCategoria,
+        idProveedor AS IdProveedor
+    FROM Producto
+    WHERE idProducto = @idProducto;
+END;
+GO
+
