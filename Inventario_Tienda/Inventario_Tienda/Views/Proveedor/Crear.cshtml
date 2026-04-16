@@ -1,0 +1,46 @@
+﻿@model Inventario_Tienda.Models.Proveedor
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Crear proveedor";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-sm border-0 rounded-4 mx-auto" style="max-width: 700px;">
+        <div class="card-body p-4">
+            <h2 class="fw-bold mb-1">Nuevo proveedor</h2>
+            <p class="text-muted mb-4">Registra un nuevo proveedor para abastecimiento de productos.</p>
+
+            <form asp-action="Crear" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="Nombre" class="form-label fw-semibold"></label>
+                    <input asp-for="Nombre" class="form-control rounded-3" placeholder="Nombre del proveedor" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Telefono" class="form-label fw-semibold"></label>
+                    <input asp-for="Telefono" class="form-control rounded-3" placeholder="Ej. 8888-9999" />
+                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Correo" class="form-label fw-semibold"></label>
+                    <input asp-for="Correo" class="form-control rounded-3" placeholder="correo@proveedor.com" />
+                    <span asp-validation-for="Correo" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary px-4 rounded-3">Guardar</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 rounded-3">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
