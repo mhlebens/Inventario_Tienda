@@ -346,3 +346,98 @@ BEGIN
 END;
 GO
 
+--- Procedimientos para el módulo de Ventas (16-04-26)
+
+-- Listar Usuarios
+CREATE OR ALTER PROCEDURE spUsuarioListar
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        idUsuario AS IdUsuario,
+        nombre AS Nombre,
+        rol AS Rol,
+        telefono AS Telefono,
+        correo AS Correo
+    FROM Usuario
+    ORDER BY nombre;
+END;
+GO
+
+-- Listar productos para venta
+CREATE OR ALTER PROCEDURE spProductoListarDisponiblesVenta
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        idProducto AS IdProducto,
+        nombre AS Nombre,
+        precioVenta AS PrecioVenta,
+        stockActual AS StockActual
+    FROM Producto
+    WHERE estado = 1 AND stockActual > 0
+    ORDER BY nombre;
+END;
+GO
+
+-- Obtener stock
+CREATE OR ALTER PROCEDURE spProductoObtenerStock
+    @idProducto INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT stockActual
+    FROM Producto
+    WHERE idProducto = @idProducto;
+END;
+GO
+
+--Descontar stock
+CREATE OR ALTER PROCEDURE spProductoDescontarStock
+    @idProducto INT,
+    @cantidad INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE Producto
+    SET stockActual = stockActual - @cantidad
+    WHERE idProducto = @idProducto;
+END;
+GO
+
+-- Crear compra y devolver id
+CREATE OR ALTER PROCEDURE spCompraCrear
+    @fecha DATETIME,
+    @total DECIMAL(10,2),
+    @idCliente INT = NULL,
+    @idEmpleado INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Compra (fecha, total, idCliente, idEmpleado)
+    VALUES (@fecha, @total, @idCliente, @idEmpleado);
+
+    SELECT SCOPE_IDENTITY();
+END;
+GO
+
+--Crear Detalle
+CREATE OR ALTER PROCEDURE spDetalleCompraCrear
+    @cantidad INT,
+    @subtotal DECIMAL(10,2),
+    @idCompra INT,
+    @idProducto INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO DetalleCompra (cantidad, subtotal, idCompra, idProducto)
+    VALUES (@cantidad, @subtotal, @idCompra, @idProducto);
+END;
+GO
+
