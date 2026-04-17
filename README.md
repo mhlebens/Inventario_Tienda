@@ -154,11 +154,3 @@ Inventario_Tienda/
 │── appsettings.json
 │── Program.cs
 ```
-
----
-
-## 👩‍💻 Autor
-
-Desarrollado por: Monica Durán
-
----
