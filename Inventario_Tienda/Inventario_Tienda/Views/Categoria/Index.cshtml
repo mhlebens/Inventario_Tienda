@@ -5,71 +5,82 @@
     ViewData["Title"] = "Categorías";
 }
 
-<div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="fw-bold mb-1">Categorías</h2>
-            <p class="text-muted mb-0">Gestiona las categorías de los productos cosméticos.</p>
-        </div>
-        <a asp-action="Crear" class="btn btn-primary px-4 rounded-3">+ Nueva categoría</a>
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Catálogo</h2>
+        <p class="page-subtitle">Administra productos, categorías y proveedores desde un mismo módulo.</p>
     </div>
 
-    @if (TempData["Mensaje"] != null)
-    {
-        <div class="alert alert-success rounded-3">@TempData["Mensaje"]</div>
-    }
+    <div class="page-actions">
+        <a asp-controller="Producto" asp-action="Crear" class="btn-main">Nuevo producto</a>
+    </div>
+</div>
 
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger rounded-3">@TempData["Error"]</div>
-    }
+<div class="module-tabs">
+    <a asp-controller="Producto" asp-action="VerProducto" class="module-tab">Productos</a>
+    <a asp-controller="Categoria" asp-action="Index" class="module-tab active">Categorías</a>
+    <a asp-controller="Proveedor" asp-action="Index" class="module-tab">Proveedores</a>
+</div>
 
-    <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th class="text-end">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model != null && Model.Any())
-                        {
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>@item.IdCategoria</td>
-                                    <td>@item.Nombre</td>
-                                    <td class="text-end">
-                                        <a asp-action="Editar" asp-route-id="@item.IdCategoria" class="btn btn-sm btn-outline-secondary me-2">
-                                            Editar
-                                        </a>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success mb-4">
+        @TempData["Mensaje"]
+    </div>
+}
 
-                                        <form asp-action="Eliminar" asp-route-id="@item.IdCategoria" method="post" class="d-inline">
-                                            @Html.AntiForgeryToken()
-                                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                    onclick="return confirm('¿Seguro que deseas eliminar esta categoría?');">
-                                                Eliminar
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="3" class="text-center text-muted py-4">
-                                    No hay categorías registradas.
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mb-4">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="category-grid">
+    <div class="category-form-card">
+        <h4>Nueva categoría</h4>
+        <p class="category-helper">Agrega una categoría para organizar mejor el catálogo de productos.</p>
+
+        <form asp-action="Crear" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label class="form-label">Nombre de la categoría</label>
+                <input type="text"
+                       name="Nombre"
+                       class="form-control"
+                       placeholder="Ej. Skincare"
+                       required />
+            </div>
+
+            <button type="submit" class="btn-main w-100">
+                Guardar categoría
+            </button>
+        </form>
+    </div>
+
+    <div class="category-list-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div>
+                <h4 class="mb-1">Categorías registradas</h4>
+                <p class="category-helper mb-0">Consulta y administra las categorías disponibles.</p>
+            </div>
+
+            <span class="badge-soft badge-sale">@Model.Count() categorías</span>
+        </div>
+
+        <div id="categoryListContainer">
+            @await Html.PartialAsync("_CategoriaListPartial", Model)
+        </div>
+    </div>
+
+    <div class="modal fade" id="categoriaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" id="categoriaModalContent">
             </div>
         </div>
     </div>
 </div>
+@section Scripts {
+    <script src="~/js/categoria.js"></script>
+}

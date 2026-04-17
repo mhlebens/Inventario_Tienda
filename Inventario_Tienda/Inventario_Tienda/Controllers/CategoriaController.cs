@@ -131,5 +131,84 @@ namespace Inventario_Tienda.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EditarModal(int id)
+        {
+            using var connection = ObtenerConexion();
+
+            var categoria = await connection.QueryFirstOrDefaultAsync<Categoria>(
+                "spCategoriaObtenerPorId",
+                new
+                {
+                    idCategoria = id
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            if (categoria == null)
+                return NotFound();
+
+            return PartialView("_EditarCategoriaModalPartial", categoria);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarAjax(Categoria categoria)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Datos inválidos.");
+
+            using var connection = ObtenerConexion();
+
+            await connection.ExecuteAsync(
+                "spCategoriaActualizar",
+                new
+                {
+                    idCategoria = categoria.IdCategoria,
+                    nombre = categoria.Nombre
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            var categorias = await connection.QueryAsync<Categoria>(
+                "spCategoriaListar",
+                commandType: CommandType.StoredProcedure
+            );
+
+            return PartialView("_CategoriaListPartial", categorias);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EliminarAjax(int id)
+        {
+            using var connection = ObtenerConexion();
+
+            try
+            {
+                await connection.ExecuteAsync(
+                    "spCategoriaEliminar",
+                    new
+                    {
+                        idCategoria = id
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            catch (SqlException)
+            {
+                return BadRequest("No se puede eliminar la categoría porque está relacionada con uno o más productos.");
+            }
+
+            var categorias = await connection.QueryAsync<Categoria>(
+                "spCategoriaListar",
+                commandType: CommandType.StoredProcedure
+            );
+
+            return PartialView("_CategoriaListPartial", categorias);
+        }
+
+
     }
 }

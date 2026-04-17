@@ -7,9 +7,14 @@
 
 <div class="page-header">
     <div>
-        <h2 class="page-title">Registrar venta</h2>
-        <p class="page-subtitle">Selecciona cliente, empleado y cantidades para completar la venta.</p>
+        <h2 class="page-title">Ventas</h2>
+        <p class="page-subtitle">Registra una nueva venta y mantén el control de las transacciones.</p>
     </div>
+</div>
+
+<div class="module-tabs">
+    <a asp-controller="Venta" asp-action="Historial" class="module-tab">Historial</a>
+    <a asp-controller="Venta" asp-action="Registrar" class="module-tab active">Nueva venta</a>
 </div>
 
 @if (TempData["Mensaje"] != null)

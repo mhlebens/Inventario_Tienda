@@ -39,8 +39,8 @@
                 </a>
 
                 <a asp-controller="Producto" asp-action="VerProducto"
-                       class="nav-link @(currentController == "Producto" ? "active" : "")">
-                    <span>Ver productos</span>
+                       class="nav-link @((currentController == "Producto" || currentController == "Categoria" || currentController == "Proveedor") ? "active" : "")">
+                    <span>Catálogo</span>
                 </a>
 
                 <a asp-controller="Cliente" asp-action="Index"
@@ -48,24 +48,9 @@
                     <span>Clientes</span>
                 </a>
 
-                <a asp-controller="Categoria" asp-action="Index"
-                       class="nav-link @(currentController == "Categoria" ? "active" : "")">
-                    <span>Categorías</span>
-                </a>
-
-                <a asp-controller="Proveedor" asp-action="Index"
-                       class="nav-link @(currentController == "Proveedor" ? "active" : "")">
-                    <span>Proveedores</span>
-                </a>
-
-                <a asp-controller="Venta" asp-action="Registrar"
-                       class="nav-link @(currentController == "Venta" && currentAction == "Registrar" ? "active" : "")">
-                    <span>Registrar venta</span>
-                </a>
-
                 <a asp-controller="Venta" asp-action="Historial"
-                       class="nav-link @(currentController == "Venta" && currentAction == "Historial" ? "active" : "")">
-                    <span>Historial de ventas</span>
+                       class="nav-link @(currentController == "Venta" ? "active" : "")">
+                    <span>Ventas</span>
                 </a>
             </nav>
 

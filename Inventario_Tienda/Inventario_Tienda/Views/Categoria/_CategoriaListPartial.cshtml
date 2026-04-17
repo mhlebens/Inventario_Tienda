@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Inventario_Tienda.Models.Categoria>
+
+@if (Model != null && Model.Any())
+{
+    <div class="category-list">
+        @foreach (var item in Model)
+        {
+            <div class="category-item" id="categoria-row-@item.IdCategoria">
+                <div class="category-item-left">
+                    <div class="category-icon">
+                        @item.Nombre.Substring(0, 1).ToUpper()
+                    </div>
+
+                    <div>
+                        <div class="category-name">@item.Nombre</div>
+                        <div class="category-meta">ID: @item.IdCategoria</div>
+                    </div>
+                </div>
+
+                <div class="table-actions">
+                    <button type="button"
+                            class="btn-table-edit btn-edit-categoria"
+                            data-id="@item.IdCategoria">
+                        Editar
+                    </button>
+
+                    <button type="button"
+                            class="btn-table-delete btn-delete-categoria"
+                            data-id="@item.IdCategoria">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="category-empty">
+        No hay categorías registradas todavía.
+    </div>
+}

@@ -7,15 +7,21 @@
 
 <div class="page-header">
     <div>
-        <h2 class="page-title">Productos registrados</h2>
-        <p class="page-subtitle">Consulta la lista de cosméticos almacenados en el sistema.</p>
+        <h2 class="page-title">Catálogo</h2>
+        <p class="page-subtitle">Administra productos, categorías y proveedores desde un mismo módulo.</p>
     </div>
 
     <div class="page-actions">
-        <a asp-controller="Producto" asp-action="Crear" class="btn-main">
-            Crear nuevo producto
-        </a>
+        <button type="button" class="btn-main" id="btnNuevoProducto">
+            Nuevo producto
+        </button>
     </div>
+</div>
+
+<div class="module-tabs">
+    <a asp-controller="Producto" asp-action="VerProducto" class="module-tab active">Productos</a>
+    <a asp-controller="Categoria" asp-action="Index" class="module-tab">Categorías</a>
+    <a asp-controller="Proveedor" asp-action="Index" class="module-tab">Proveedores</a>
 </div>
 
 @if (TempData["Mensaje"] != null)
@@ -32,85 +38,98 @@
     </div>
 }
 
-<div class="table-container">
-    <div class="table-responsive">
-        <table class="table align-middle">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Producto</th>
-                    <th>Precio Compra</th>
-                    <th>Precio Venta</th>
-                    <th>Stock</th>
-                    <th>Estado</th>
-                    <th>Categoría</th>
-                    <th>Proveedor</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+<div id="productoTableContainer">
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
                     <tr>
-                        <td>@item.IdProducto</td>
-
-                        <td>
-                            <div class="product-cell">
-                                <div class="product-avatar">
-                                    @item.Nombre.Substring(0, 1).ToUpper()
-                                </div>
-                                <div class="product-info">
-                                    <span class="name">@item.Nombre</span>
-                                    <span class="meta">@item.Descripcion</span>
-                                </div>
-                            </div>
-                        </td>
-
-                        <td>₡ @item.PrecioCompra.ToString("N2")</td>
-                        <td>₡ @item.PrecioVenta.ToString("N2")</td>
-
-                        <td>
-                            @if (item.StockActual > 20)
-                            {
-                                <span class="badge-soft badge-stock-high">Disponible (@item.StockActual)</span>
-                            }
-                            else if (item.StockActual > 5)
-                            {
-                                <span class="badge-soft badge-stock-medium">Stock bajo (@item.StockActual)</span>
-                            }
-                            else
-                            {
-                                <span class="badge-soft badge-stock-low">Crítico (@item.StockActual)</span>
-                            }
-                        </td>
-
-                        <td>
-                            <span class="badge-soft badge-sale">
-                                @(item.Estado ? "Activo" : "Inactivo")
-                            </span>
-                        </td>
-
-                        <td>@item.NombreCategoria</td>
-                        <td>@item.NombreProveedor</td>
-
-                        <td>
-                            <div class="d-flex gap-2 flex-wrap">
-                                <a asp-action="Editar" asp-route-id="@item.IdProducto" class="btn btn-warning btn-sm">
-                                    Editar
-                                </a>
-
-                                <form asp-action="Eliminar" asp-route-id="@item.IdProducto" method="post"
-                                      onsubmit="return confirm('¿Desea eliminar este producto?');">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        Eliminar
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
+                        <th>ID</th>
+                        <th>Producto</th>
+                        <th>Precio Compra</th>
+                        <th>Precio Venta</th>
+                        <th>Stock</th>
+                        <th>Estado</th>
+                        <th>Categoría</th>
+                        <th>Proveedor</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.IdProducto</td>
+
+                            <td>
+                                <div class="product-cell">
+                                    <div class="product-avatar">
+                                        @item.Nombre.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div class="product-info">
+                                        <span class="name">@item.Nombre</span>
+                                        <span class="meta">@item.Descripcion</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>₡ @item.PrecioCompra.ToString("N2")</td>
+                            <td>₡ @item.PrecioVenta.ToString("N2")</td>
+
+                            <td>
+                                @if (item.StockActual > 20)
+                                {
+                                    <span class="badge-soft badge-stock-high">Disponible (@item.StockActual)</span>
+                                }
+                                else if (item.StockActual > 5)
+                                {
+                                    <span class="badge-soft badge-stock-medium">Stock bajo (@item.StockActual)</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-soft badge-stock-low">Crítico (@item.StockActual)</span>
+                                }
+                            </td>
+
+                            <td>
+                                <span class="badge-soft badge-sale">
+                                    @(item.Estado ? "Activo" : "Inactivo")
+                                </span>
+                            </td>
+
+                            <td>@item.NombreCategoria</td>
+                            <td>@item.NombreProveedor</td>
+
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button"
+                                            class="btn-table-edit btn-edit-producto"
+                                            data-id="@item.IdProducto">
+                                        Editar
+                                    </button>
+
+                                    <form asp-action="Eliminar" asp-route-id="@item.IdProducto" method="post"
+                                          onsubmit="return confirm('¿Desea eliminar este producto?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn-table-delete">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+<div class="modal fade" id="productoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" id="productoModalContent">
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/producto.js"></script>
+}
