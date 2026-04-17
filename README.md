@@ -129,8 +129,8 @@ Inventario_Tienda/
 │
 │── Views/
 │   ├── Categoria/
-|   │   ├── Crear.cshtml
-|   │   ├── Editar.cshtml
+|   │   ├── _CategoriaListPartial.cshtml
+|   │   ├── _EditarCategoriaModalParcial.cshtml
 |   │   ├── Index.cshtml
 │   ├── Cliente/
 |   │   ├── Crear.cshtml
@@ -140,8 +140,8 @@ Inventario_Tienda/
 |   │   ├── Index.cshtml
 |   │   ├── Provacy.cshtml
 │   ├── Producto/
-|   │   ├── Crear.cshtml
-|   │   ├── Editar.cshtml
+|   │   ├── _ProductoListPartial.cshtml
+|   │   ├── _ProductoTablePartial.cshtml
 |   │   ├── VerProducto.cshtml
 │   ├── Proveedor/
 |   │   ├── Crear.cshtml
@@ -163,6 +163,7 @@ Inventario_Tienda/
 │   ├── DetalleVentaViewModel.cs
 │   ├── VentaHistorialViewModel.cs
 │   ├── VentaViewModel.cs
+|
 │── wwwroot/
 │── appsettings.json
 │── Program.cs
