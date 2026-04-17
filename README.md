@@ -59,13 +59,26 @@ Antes de ejecutar el proyecto, asegúrese de tener instalado:
 
 ---
 
-## 🚀 Instalación
-
-1. Clonar el repositorio:
-
+## 🚀 Instalación 
+1. Hay 2 opciones:
+## Clonar el repositorio:
+a. Se abre el cmd, y te diriges a la carpeta donde deseas realizar la instalacion, Ejemplo, ir a Escritorio:
+```
+cd Desktop
+```
+O crear una carpeta:
+```
+mkdir proyectos
+cd proyectos
+```
+B. Luego correr el commando para clonarlo: 
 ```
 git clone https://github.com/usuario/Inventario_Tienda.git
 ```
+IMPORTANTE: Git debe estar instalado en su computadora.
+
+## Descargar desde Github: 
+También puede descargar el proyecto manualmente desde GitHub usando el botón "Code" → "Download ZIP"
 
 2. Abrir el proyecto en Visual Studio
 
