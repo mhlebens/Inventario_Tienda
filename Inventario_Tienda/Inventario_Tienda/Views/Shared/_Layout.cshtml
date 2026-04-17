@@ -6,59 +6,96 @@
     <title>@ViewData["Title"] - Inventario_Tienda</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <div class="app-shell">
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    }
+
+    <div class="app-layout">
         <aside class="sidebar">
             <div class="sidebar-brand">
-                <h2>Inventario</h2>
-                <p>Tienda</p>
+                <div class="brand-row">
+                    <div class="brand-icon">
+                        <i class="bi bi-stars"></i>
+                    </div>
+                    <div class="brand-text">
+                        <h2 class="brand-title">CherryBloom</h2>
+                        <span class="brand-subtitle">Inventario & Ventas</span>
+                    </div>
+                </div>
             </div>
 
-            <nav class="sidebar-menu">
-                <div class="menu-section">Principal</div>
+            <div class="sidebar-section-title">Menú principal</div>
 
-                <a asp-controller="Home" asp-action="Index" class="menu-item">
+            <nav class="nav flex-column">
+                <a asp-controller="Home" asp-action="Index"
+                       class="nav-link @(currentController == "Home" ? "active" : "")">
                     <span>Inicio</span>
                 </a>
 
-                <a asp-controller="Venta" asp-action="Registrar" class="menu-item">
-                    <span>Registrar venta</span>
-                </a>
-
-                <a asp-controller="Venta" asp-action="Historial" class="menu-item">
-                    <span>Historial de ventas</span>
-                </a>
-
-                <a asp-controller="Producto" asp-action="VerProducto" class="menu-item">
+                <a asp-controller="Producto" asp-action="VerProducto"
+                       class="nav-link @(currentController == "Producto" ? "active" : "")">
                     <span>Ver productos</span>
                 </a>
-                <a asp-controller="Cliente" asp-action="Index" class="menu-item">
+
+                <a asp-controller="Cliente" asp-action="Index"
+                       class="nav-link @(currentController == "Cliente" ? "active" : "")">
                     <span>Clientes</span>
                 </a>
-                <a asp-controller="Categoria" asp-action="Index" class="menu-item">
+
+                <a asp-controller="Categoria" asp-action="Index"
+                       class="nav-link @(currentController == "Categoria" ? "active" : "")">
                     <span>Categorías</span>
                 </a>
 
-                <a asp-controller="Proveedor" asp-action="Index" class="menu-item">
+                <a asp-controller="Proveedor" asp-action="Index"
+                       class="nav-link @(currentController == "Proveedor" ? "active" : "")">
                     <span>Proveedores</span>
                 </a>
+
+                <a asp-controller="Venta" asp-action="Registrar"
+                       class="nav-link @(currentController == "Venta" && currentAction == "Registrar" ? "active" : "")">
+                    <span>Registrar venta</span>
+                </a>
+
+                <a asp-controller="Venta" asp-action="Historial"
+                       class="nav-link @(currentController == "Venta" && currentAction == "Historial" ? "active" : "")">
+                    <span>Historial de ventas</span>
+                </a>
             </nav>
+
+            <div class="sidebar-footer">
+                Gestión elegante para tu tienda de cosméticos
+            </div>
         </aside>
 
-        <div class="main-wrapper">
+        <main class="main-content">
             <header class="topbar">
-                <div>
+                <div class="topbar-left">
                     <h1 class="topbar-title">@ViewData["Title"]</h1>
-                    <span class="topbar-subtitle">Sistema de inventario</span>
+                    <p class="topbar-subtitle">Panel administrativo de tienda boutique</p>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="user-pill">
+                        <div class="avatar">CS</div>
+                        <div class="user-info">
+                            <span class="user-name">Sistema</span>
+                            <span class="user-role">Inventario y ventas</span>
+                        </div>
+                    </div>
                 </div>
             </header>
 
-            <main class="content-area">
+            <div class="page-container">
                 @RenderBody()
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
