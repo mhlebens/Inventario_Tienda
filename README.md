@@ -64,7 +64,7 @@ Antes de ejecutar el proyecto, asegúrese de tener instalado:
 1. Clonar el repositorio:
 
 ```
-git clone https://github.com/usuario/CherryBloom.git
+git clone https://github.com/usuario/Inventario_Tienda.git
 ```
 
 2. Abrir el proyecto en Visual Studio
