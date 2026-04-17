@@ -81,7 +81,7 @@ Ejemplo:
 "ConnectionStrings": {
   "DefaultConnection": "Server=TU_SERVIDOR;Database=TiendaDB;Trusted_Connection=True;TrustServerCertificate=True;"
 }
-
+```
 ---
 
 ## ▶️ Ejecución
@@ -95,7 +95,7 @@ Desde Visual Studio:
 
 ## 📂 Estructura del proyecto
 
-```bash
+```
 Inventario_Tienda/
 │── Controllers/
 │   ├── CategoriaController.cs
