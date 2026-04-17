@@ -346,16 +346,10 @@ BEGIN
 END;
 GO
 
-/*Procedimientos del módulo de ventas (16/04)*/
+--- Procedimientos para el módulo de Ventas (16-04-26)
 
-USE TiendaDB;
-GO
-
-/* ============================
-   CLIENTES (tabla Usuario)
-   ============================ */
-
-CREATE OR ALTER PROCEDURE spClienteListar
+-- Listar Usuarios
+CREATE OR ALTER PROCEDURE spUsuarioListar
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -367,119 +361,83 @@ BEGIN
         telefono AS Telefono,
         correo AS Correo
     FROM Usuario
-    WHERE rol = 'Cliente'
     ORDER BY nombre;
 END;
 GO
 
-CREATE OR ALTER PROCEDURE spClienteObtenerPorId
-    @idUsuario INT
+-- Listar productos para venta
+CREATE OR ALTER PROCEDURE spProductoListarDisponiblesVenta
 AS
 BEGIN
     SET NOCOUNT ON;
 
     SELECT
-        idUsuario AS IdUsuario,
+        idProducto AS IdProducto,
         nombre AS Nombre,
-        rol AS Rol,
-        telefono AS Telefono,
-        correo AS Correo
-    FROM Usuario
-    WHERE idUsuario = @idUsuario
-      AND rol = 'Cliente';
-END;
-GO
-
-CREATE OR ALTER PROCEDURE spClienteCrear
-    @nombre NVARCHAR(100),
-    @telefono NVARCHAR(20) = NULL,
-    @correo NVARCHAR(100) = NULL
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    INSERT INTO Usuario (nombre, rol, telefono, correo)
-    VALUES (@nombre, 'Cliente', @telefono, @correo);
-END;
-GO
-
-CREATE OR ALTER PROCEDURE spClienteActualizar
-    @idUsuario INT,
-    @nombre NVARCHAR(100),
-    @telefono NVARCHAR(20) = NULL,
-    @correo NVARCHAR(100) = NULL
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    UPDATE Usuario
-    SET nombre = @nombre,
-        telefono = @telefono,
-        correo = @correo
-    WHERE idUsuario = @idUsuario
-      AND rol = 'Cliente';
-END;
-GO
-
-CREATE OR ALTER PROCEDURE spClienteEliminar
-    @idUsuario INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    DELETE FROM Usuario
-    WHERE idUsuario = @idUsuario
-      AND rol = 'Cliente';
-END;
-GO
-
-CREATE OR ALTER PROCEDURE spClienteListarParaVenta
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        idUsuario AS IdUsuario,
-        nombre AS Nombre
-    FROM Usuario
-    WHERE rol = 'Cliente'
+        precioVenta AS PrecioVenta,
+        stockActual AS StockActual
+    FROM Producto
+    WHERE estado = 1 AND stockActual > 0
     ORDER BY nombre;
 END;
 GO
 
-CREATE OR ALTER PROCEDURE spEmpleadoListarParaVenta
+-- Obtener stock
+CREATE OR ALTER PROCEDURE spProductoObtenerStock
+    @idProducto INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT
-        idUsuario AS IdUsuario,
-        nombre AS Nombre
-    FROM Usuario
-    WHERE rol = 'Empleado'
-    ORDER BY nombre;
+    SELECT stockActual
+    FROM Producto
+    WHERE idProducto = @idProducto;
 END;
 GO
 
-INSERT INTO Usuario (nombre, rol, telefono, correo)
-VALUES 
-('María Mata', 'Empleado', '8888-1111', 'maria@tienda.com'),
-('Daniel Rojas', 'Empleado', '8888-2222', 'daniel@tienda.com');
-
-CREATE OR ALTER PROCEDURE spVentaHistorialListar
+--Descontar stock
+CREATE OR ALTER PROCEDURE spProductoDescontarStock
+    @idProducto INT,
+    @cantidad INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT
-        c.idCompra AS IdCompra,
-        c.fecha AS Fecha,
-        c.total AS Total,
-        ISNULL(cli.nombre, 'Sin cliente') AS Cliente,
-        ISNULL(emp.nombre, 'Sin empleado') AS Empleado
-    FROM Compra c
-    LEFT JOIN Usuario cli ON c.idCliente = cli.idUsuario
-    LEFT JOIN Usuario emp ON c.idEmpleado = emp.idUsuario
-    ORDER BY c.fecha DESC, c.idCompra DESC;
+    UPDATE Producto
+    SET stockActual = stockActual - @cantidad
+    WHERE idProducto = @idProducto;
 END;
 GO
+
+-- Crear compra y devolver id
+CREATE OR ALTER PROCEDURE spCompraCrear
+    @fecha DATETIME,
+    @total DECIMAL(10,2),
+    @idCliente INT = NULL,
+    @idEmpleado INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Compra (fecha, total, idCliente, idEmpleado)
+    VALUES (@fecha, @total, @idCliente, @idEmpleado);
+
+    SELECT SCOPE_IDENTITY();
+END;
+GO
+
+--Crear Detalle
+CREATE OR ALTER PROCEDURE spDetalleCompraCrear
+    @cantidad INT,
+    @subtotal DECIMAL(10,2),
+    @idCompra INT,
+    @idProducto INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO DetalleCompra (cantidad, subtotal, idCompra, idProducto)
+    VALUES (@cantidad, @subtotal, @idCompra, @idProducto);
+END;
+GO
+
