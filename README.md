@@ -56,8 +56,6 @@ Antes de ejecutar el proyecto, asegúrese de tener instalado:
 1. Copiar el codigo de la base de datos situada en Inventario_Tienda/Database/SQLTiendaDB.sql
 2. Abrir SQL server y seleccionar crear un query nuevo.
 3. Pegar el codigo en el query, y se ejecuta el scripts SQL para la creacion de tablas, relaciones, procedimientos, etc.
-   
-```
 
 ---
 
@@ -65,7 +63,7 @@ Antes de ejecutar el proyecto, asegúrese de tener instalado:
 
 1. Clonar el repositorio:
 
-```bash
+```
 git clone https://github.com/usuario/CherryBloom.git
 ```
 
