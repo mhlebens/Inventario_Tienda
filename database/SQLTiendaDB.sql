@@ -346,3 +346,140 @@ BEGIN
 END;
 GO
 
+/*Procedimientos del módulo de ventas (16/04)*/
+
+USE TiendaDB;
+GO
+
+/* ============================
+   CLIENTES (tabla Usuario)
+   ============================ */
+
+CREATE OR ALTER PROCEDURE spClienteListar
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        idUsuario AS IdUsuario,
+        nombre AS Nombre,
+        rol AS Rol,
+        telefono AS Telefono,
+        correo AS Correo
+    FROM Usuario
+    WHERE rol = 'Cliente'
+    ORDER BY nombre;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE spClienteObtenerPorId
+    @idUsuario INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        idUsuario AS IdUsuario,
+        nombre AS Nombre,
+        rol AS Rol,
+        telefono AS Telefono,
+        correo AS Correo
+    FROM Usuario
+    WHERE idUsuario = @idUsuario
+      AND rol = 'Cliente';
+END;
+GO
+
+CREATE OR ALTER PROCEDURE spClienteCrear
+    @nombre NVARCHAR(100),
+    @telefono NVARCHAR(20) = NULL,
+    @correo NVARCHAR(100) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Usuario (nombre, rol, telefono, correo)
+    VALUES (@nombre, 'Cliente', @telefono, @correo);
+END;
+GO
+
+CREATE OR ALTER PROCEDURE spClienteActualizar
+    @idUsuario INT,
+    @nombre NVARCHAR(100),
+    @telefono NVARCHAR(20) = NULL,
+    @correo NVARCHAR(100) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE Usuario
+    SET nombre = @nombre,
+        telefono = @telefono,
+        correo = @correo
+    WHERE idUsuario = @idUsuario
+      AND rol = 'Cliente';
+END;
+GO
+
+CREATE OR ALTER PROCEDURE spClienteEliminar
+    @idUsuario INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DELETE FROM Usuario
+    WHERE idUsuario = @idUsuario
+      AND rol = 'Cliente';
+END;
+GO
+
+CREATE OR ALTER PROCEDURE spClienteListarParaVenta
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        idUsuario AS IdUsuario,
+        nombre AS Nombre
+    FROM Usuario
+    WHERE rol = 'Cliente'
+    ORDER BY nombre;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE spEmpleadoListarParaVenta
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        idUsuario AS IdUsuario,
+        nombre AS Nombre
+    FROM Usuario
+    WHERE rol = 'Empleado'
+    ORDER BY nombre;
+END;
+GO
+
+INSERT INTO Usuario (nombre, rol, telefono, correo)
+VALUES 
+('María Mata', 'Empleado', '8888-1111', 'maria@tienda.com'),
+('Daniel Rojas', 'Empleado', '8888-2222', 'daniel@tienda.com');
+
+CREATE OR ALTER PROCEDURE spVentaHistorialListar
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        c.idCompra AS IdCompra,
+        c.fecha AS Fecha,
+        c.total AS Total,
+        ISNULL(cli.nombre, 'Sin cliente') AS Cliente,
+        ISNULL(emp.nombre, 'Sin empleado') AS Empleado
+    FROM Compra c
+    LEFT JOIN Usuario cli ON c.idCliente = cli.idUsuario
+    LEFT JOIN Usuario emp ON c.idEmpleado = emp.idUsuario
+    ORDER BY c.fecha DESC, c.idCompra DESC;
+END;
+GO
