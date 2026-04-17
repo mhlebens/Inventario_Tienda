@@ -58,6 +58,8 @@ namespace Inventario_Tienda.Services
                 // Sum() permite calcular el total general a partir de los subtotales.
                 venta.Total = detallesValidos.Sum(d => d.Subtotal);
 
+                // Paradigma estructurado:
+                // Se recorre cada detalle para validar stock antes de registrar la venta.
                 foreach (var detalle in detallesValidos)
                 {
                     var stockActual = await connection.ExecuteScalarAsync<int>(
