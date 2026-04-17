@@ -1,0 +1,124 @@
+﻿@model Inventario_Tienda.ViewModels.VentaViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Registrar Venta";
+}
+
+<div class="container-fluid py-4">
+
+    <h2 class="fw-bold mb-4">Registrar Venta</h2>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success">@TempData["Mensaje"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <form asp-action="Registrar" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Cliente</label>
+                <select asp-for="IdCliente" asp-items="ViewBag.Clientes" class="form-select">
+                    <option value="">-- Seleccionar cliente --</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Empleado</label>
+                <select asp-for="IdEmpleado" asp-items="ViewBag.Empleados" class="form-select">
+                    <option value="">-- Seleccionar empleado --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Model.Detalles != null && Model.Detalles.Any())
+                            {
+                                @for (int i = 0; i < Model.Detalles.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Model.Detalles[i].NombreProducto
+                                            <input type="hidden" asp-for="Detalles[@i].IdProducto" />
+                                            <input type="hidden" asp-for="Detalles[@i].NombreProducto" />
+                                        </td>
+
+                                        <td>
+                                            ₡ @Model.Detalles[i].PrecioVenta.ToString("N2")
+                                            <input type="hidden" asp-for="Detalles[@i].PrecioVenta" />
+                                        </td>
+
+                                        <td>
+                                            @Model.Detalles[i].StockDisponible
+                                            <input type="hidden" asp-for="Detalles[@i].StockDisponible" />
+                                        </td>
+
+                                        <td>
+                                            <input type="number"
+                                                   asp-for="Detalles[@i].Cantidad"
+                                                   class="form-control cantidad-input"
+                                                   min="0"
+                                                   max="@Model.Detalles[i].StockDisponible"
+                                                   data-precio="@Model.Detalles[i].PrecioVenta" />
+                                        </td>
+
+                                        <td>
+                                            <span class="subtotal-text">₡ @Model.Detalles[i].Subtotal.ToString("N2")</span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        No hay productos disponibles para la venta.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <h4>Total: ₡ <span id="totalGeneral">@Model.Total.ToString("N2")</span></h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary px-4">
+                Registrar Venta
+            </button>
+
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary px-4">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/venta.js"></script>
+}

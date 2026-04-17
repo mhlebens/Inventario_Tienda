@@ -1,9 +1,11 @@
-using Microsoft.EntityFrameworkCore;
 using Inventario_Tienda.Data;
+using Inventario_Tienda.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<VentaService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -49,6 +49,12 @@
 
         <div class="mb-3">
             <label asp-for="IdCategoria" class="form-label">Categoría</label>
+
+            @* Paradigma declarativo:
+                   La vista especifica qué datos mostrar y cómo enlazarlos al modelo
+                   usando atributos de Razor como asp-for y asp-items, sin programar
+                   manualmente el renderizado de cada opción *@
+
             <select asp-for="IdCategoria" asp-items="ViewBag.Categorias" class="form-select">
                 <option value="">-- Seleccione una categoría --</option>
             </select>
