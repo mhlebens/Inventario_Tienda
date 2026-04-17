@@ -1,27 +1,33 @@
-﻿@model Inventario_Tienda.Models.Categoria
+﻿@model Inventario_Tienda.Models.Usuario
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Crear categoría";
+    ViewData["Title"] = "Crear cliente";
 }
 
 <div class="container-fluid py-4">
-    <div class="card shadow-sm border-0 rounded-4 mx-auto" style="max-width: 650px;">
+    <div class="card shadow-sm border-0 rounded-4 mx-auto" style="max-width: 700px;">
         <div class="card-body p-4">
-            <h2 class="fw-bold mb-1">Nueva categoría</h2>
-            <p class="text-muted mb-4">Agrega una nueva categoría para clasificar productos.</p>
-
-            @* Paradigma declarativo:
-               La vista declara el enlace entre el campo del formulario
-               y la propiedad Nombre del modelo usando asp-for *@
+            <h2 class="fw-bold mb-1">Nuevo cliente</h2>
+            <p class="text-muted mb-4">Registra un nuevo cliente para futuras ventas.</p>
 
             <form asp-action="Crear" method="post">
                 @Html.AntiForgeryToken()
 
                 <div class="mb-3">
                     <label asp-for="Nombre" class="form-label fw-semibold"></label>
-                    <input asp-for="Nombre" class="form-control rounded-3" placeholder="Ej. Maquillaje, Skincare, Perfumes" />
+                    <input asp-for="Nombre" class="form-control rounded-3" />
                     <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Telefono" class="form-label fw-semibold"></label>
+                    <input asp-for="Telefono" class="form-control rounded-3" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Correo" class="form-label fw-semibold"></label>
+                    <input asp-for="Correo" class="form-control rounded-3" />
                 </div>
 
                 <div class="d-flex gap-2 mt-4">
