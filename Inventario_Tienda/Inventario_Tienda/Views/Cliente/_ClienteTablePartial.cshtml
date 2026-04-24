@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Inventario_Tienda.Models.Usuario>
+
+<div class="table-container">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.IdUsuario</td>
+
+                        <td>
+                            <div class="product-cell">
+                                <div class="product-avatar">
+                                    @item.Nombre.Substring(0, 1).ToUpper()
+                                </div>
+                                <div class="product-info">
+                                    <span class="name">@item.Nombre</span>
+                                    <span class="meta">Cliente registrado en el sistema</span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="table-title-cell">@item.Telefono</span>
+                        </td>
+
+                        <td>
+                            <span class="table-title-cell">@item.Correo</span>
+                        </td>
+
+                        <td>
+                            <div class="table-actions">
+                                <button type="button"
+                                        class="btn-table-edit btn-edit-cliente"
+                                        data-id="@item.IdUsuario">
+                                    Editar
+                                </button>
+
+                                <form asp-action="Eliminar"
+                                      asp-route-id="@item.IdUsuario"
+                                      method="post"
+                                      onsubmit="return confirm('¿Desea eliminar este cliente?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn-table-delete">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

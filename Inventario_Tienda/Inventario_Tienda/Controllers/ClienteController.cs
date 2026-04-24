@@ -20,7 +20,6 @@ namespace Inventario_Tienda.Controllers
             return new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
 
-        // GET: Cliente
         public async Task<IActionResult> Index()
         {
             using var connection = ObtenerConexion();
@@ -33,21 +32,35 @@ namespace Inventario_Tienda.Controllers
             return View(clientes);
         }
 
-        // GET: Cliente/Crear
-        public IActionResult Crear()
+        [HttpGet]
+        public IActionResult CrearModal()
         {
-            return View();
+            return PartialView("_ClienteModalPartial", new Usuario());
         }
 
-        // POST: Cliente/Crear
+        [HttpGet]
+        public async Task<IActionResult> EditarModal(int id)
+        {
+            using var connection = ObtenerConexion();
+
+            var cliente = await connection.QueryFirstOrDefaultAsync<Usuario>(
+                "spClienteObtenerPorId",
+                new { idUsuario = id },
+                commandType: CommandType.StoredProcedure
+            );
+
+            if (cliente == null)
+                return NotFound();
+
+            return PartialView("_ClienteModalPartial", cliente);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear(Usuario cliente)
+        public async Task<IActionResult> CrearAjax(Usuario cliente)
         {
-            // Paradigma procedural:
-            // Se valida el modelo, luego se ejecuta el procedimiento y finalmente se redirige.
             if (!ModelState.IsValid)
-                return View(cliente);
+                return BadRequest("Datos inválidos.");
 
             using var connection = ObtenerConexion();
 
@@ -62,34 +75,16 @@ namespace Inventario_Tienda.Controllers
                 commandType: CommandType.StoredProcedure
             );
 
-            TempData["Mensaje"] = "Cliente registrado correctamente.";
-            return RedirectToAction(nameof(Index));
+            var clientes = await ListarClientes(connection);
+            return PartialView("_ClienteTablePartial", clientes);
         }
 
-        // GET: Cliente/Editar/5
-        public async Task<IActionResult> Editar(int id)
-        {
-            using var connection = ObtenerConexion();
-
-            var cliente = await connection.QueryFirstOrDefaultAsync<Usuario>(
-                "spClienteObtenerPorId",
-                new { idUsuario = id },
-                commandType: CommandType.StoredProcedure
-            );
-
-            if (cliente == null)
-                return NotFound();
-
-            return View(cliente);
-        }
-
-        // POST: Cliente/Editar
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(Usuario cliente)
+        public async Task<IActionResult> EditarAjax(Usuario cliente)
         {
             if (!ModelState.IsValid)
-                return View(cliente);
+                return BadRequest("Datos inválidos.");
 
             using var connection = ObtenerConexion();
 
@@ -105,11 +100,10 @@ namespace Inventario_Tienda.Controllers
                 commandType: CommandType.StoredProcedure
             );
 
-            TempData["Mensaje"] = "Cliente actualizado correctamente.";
-            return RedirectToAction(nameof(Index));
+            var clientes = await ListarClientes(connection);
+            return PartialView("_ClienteTablePartial", clientes);
         }
 
-        // POST: Cliente/Eliminar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Eliminar(int id)
@@ -132,6 +126,14 @@ namespace Inventario_Tienda.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private static async Task<IEnumerable<Usuario>> ListarClientes(SqlConnection connection)
+        {
+            return await connection.QueryAsync<Usuario>(
+                "spClienteListar",
+                commandType: CommandType.StoredProcedure
+            );
         }
     }
 }

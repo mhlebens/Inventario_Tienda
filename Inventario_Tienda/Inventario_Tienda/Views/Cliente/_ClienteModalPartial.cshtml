@@ -1,0 +1,44 @@
+﻿@model Inventario_Tienda.Models.Usuario
+
+@{
+    var esEdicion = Model != null && Model.IdUsuario > 0;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">@(esEdicion ? "Editar cliente" : "Nuevo cliente")</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+</div>
+
+<form id="clienteForm">
+    @Html.AntiForgeryToken()
+
+    <div class="modal-body">
+        <input type="hidden" name="IdUsuario" value="@Model?.IdUsuario" />
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="Nombre" value="@Model?.Nombre" class="form-control" required />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Teléfono</label>
+                <input type="text" name="Telefono" value="@Model?.Telefono" class="form-control" required />
+            </div>
+
+            <div class="col-12">
+                <label class="form-label">Correo</label>
+                <input type="email" name="Correo" value="@Model?.Correo" class="form-control" required />
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn-outline-soft" data-bs-dismiss="modal">
+            Cancelar
+        </button>
+        <button type="submit" class="btn-main">
+            Guardar
+        </button>
+    </div>
+</form>
