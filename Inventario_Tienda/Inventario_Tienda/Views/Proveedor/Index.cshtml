@@ -12,7 +12,9 @@
     </div>
 
     <div class="page-actions">
-        <a asp-action="Crear" class="btn-main">Nuevo proveedor</a>
+        <button type="button" class="btn-main" id="btnNuevoProveedor">
+            Nuevo proveedor
+        </button>
     </div>
 </div>
 
@@ -36,61 +38,16 @@
     </div>
 }
 
-<div class="table-container">
-    <div class="table-responsive">
-        <table class="table align-middle">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Proveedor</th>
-                    <th>Teléfono</th>
-                    <th>Correo</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.IdProveedor</td>
+<div id="proveedorTableContainer">
+    @await Html.PartialAsync("_ProveedorTablePartial", Model)
+</div>
 
-                        <td>
-                            <div class="product-cell">
-                                <div class="product-avatar">
-                                    @item.Nombre.Substring(0, 1).ToUpper()
-                                </div>
-                                <div class="product-info">
-                                    <span class="name">@item.Nombre</span>
-                                    <span class="meta">Proveedor registrado en el sistema</span>
-                                </div>
-                            </div>
-                        </td>
-
-                        <td>@item.Telefono</td>
-                        <td>@item.Correo</td>
-
-                        <td>
-                            <div class="table-actions">
-                                <a asp-action="Editar"
-                                       asp-route-id="@item.IdProveedor"
-                                       class="btn-table-edit">
-                                    Editar
-                                </a>
-
-                                <form asp-action="Eliminar"
-                                      asp-route-id="@item.IdProveedor"
-                                      method="post"
-                                      onsubmit="return confirm('¿Desea eliminar este proveedor?');">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn-table-delete">
-                                        Eliminar
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="modal fade" id="proveedorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" id="proveedorModalContent"></div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/proveedor.js"></script>
+}

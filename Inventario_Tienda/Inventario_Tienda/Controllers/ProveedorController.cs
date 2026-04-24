@@ -20,7 +20,6 @@ namespace Inventario_Tienda.Controllers
             return new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
 
-        // GET: Proveedor
         public async Task<IActionResult> Index()
         {
             using var connection = ObtenerConexion();
@@ -33,19 +32,35 @@ namespace Inventario_Tienda.Controllers
             return View(proveedores);
         }
 
-        // GET: Proveedor/Crear
-        public IActionResult Crear()
+        [HttpGet]
+        public IActionResult CrearModal()
         {
-            return View();
+            return PartialView("_ProveedorModalPartial", new Proveedor());
         }
 
-        // POST: Proveedor/Crear
+        [HttpGet]
+        public async Task<IActionResult> EditarModal(int id)
+        {
+            using var connection = ObtenerConexion();
+
+            var proveedor = await connection.QueryFirstOrDefaultAsync<Proveedor>(
+                "spProveedorObtenerPorId",
+                new { idProveedor = id },
+                commandType: CommandType.StoredProcedure
+            );
+
+            if (proveedor == null)
+                return NotFound();
+
+            return PartialView("_ProveedorModalPartial", proveedor);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear(Proveedor proveedor)
+        public async Task<IActionResult> CrearAjax(Proveedor proveedor)
         {
             if (!ModelState.IsValid)
-                return View(proveedor);
+                return BadRequest("Datos inválidos.");
 
             using var connection = ObtenerConexion();
 
@@ -60,36 +75,16 @@ namespace Inventario_Tienda.Controllers
                 commandType: CommandType.StoredProcedure
             );
 
-            return RedirectToAction(nameof(Index));
+            var proveedores = await ListarProveedores(connection);
+            return PartialView("_ProveedorTablePartial", proveedores);
         }
 
-        // GET: Proveedor/Editar/5
-        public async Task<IActionResult> Editar(int id)
-        {
-            using var connection = ObtenerConexion();
-
-            var proveedor = await connection.QueryFirstOrDefaultAsync<Proveedor>(
-                "spProveedorObtenerPorId",
-                new
-                {
-                    idProveedor = id
-                },
-                commandType: CommandType.StoredProcedure
-            );
-
-            if (proveedor == null)
-                return NotFound();
-
-            return View(proveedor);
-        }
-
-        // POST: Proveedor/Editar
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(Proveedor proveedor)
+        public async Task<IActionResult> EditarAjax(Proveedor proveedor)
         {
             if (!ModelState.IsValid)
-                return View(proveedor);
+                return BadRequest("Datos inválidos.");
 
             using var connection = ObtenerConexion();
 
@@ -105,10 +100,10 @@ namespace Inventario_Tienda.Controllers
                 commandType: CommandType.StoredProcedure
             );
 
-            return RedirectToAction(nameof(Index));
+            var proveedores = await ListarProveedores(connection);
+            return PartialView("_ProveedorTablePartial", proveedores);
         }
 
-        // POST: Proveedor/Eliminar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Eliminar(int id)
@@ -119,10 +114,7 @@ namespace Inventario_Tienda.Controllers
             {
                 await connection.ExecuteAsync(
                     "spProveedorEliminar",
-                    new
-                    {
-                        idProveedor = id
-                    },
+                    new { idProveedor = id },
                     commandType: CommandType.StoredProcedure
                 );
 
@@ -130,10 +122,18 @@ namespace Inventario_Tienda.Controllers
             }
             catch (SqlException)
             {
-                TempData["Error"] = "No se puede eliminar el proveedor porque está relacionado con uno o más productos.";
+                TempData["Error"] = "No se puede eliminar el proveedor porque está relacionado con productos.";
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private static async Task<IEnumerable<Proveedor>> ListarProveedores(SqlConnection connection)
+        {
+            return await connection.QueryAsync<Proveedor>(
+                "spProveedorListar",
+                commandType: CommandType.StoredProcedure
+            );
         }
     }
 }
