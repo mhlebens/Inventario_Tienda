@@ -62,16 +62,8 @@ Antes de ejecutar el proyecto, asegúrese de tener instalado:
 ## 🚀 Instalación 
 1. Hay 2 opciones:
 #### Clonar el repositorio:
-a. Se abre el cmd, y te diriges a la carpeta donde deseas realizar la instalacion, Ejemplo, ir a Escritorio:
-```
-cd Desktop
-```
-O crear una carpeta:
-```
-mkdir proyectos
-cd proyectos
-```
-B. Luego correr el commando para clonarlo: 
+A. Abrir Visual Studio, seleccionar la opcion de clonar repositorio.
+B. Luego pegar el URL para clonarlo y la ubicacion del folder: 
 ```
 git clone https://github.com/usuario/Inventario_Tienda.git
 ```
@@ -129,23 +121,23 @@ Inventario_Tienda/
 │
 │── Views/
 │   ├── Categoria/
-|   │   ├── Crear.cshtml
-|   │   ├── Editar.cshtml
+|   │   ├── _CategoriaListPartial.cshtml
+|   │   ├── _EditarCategoriaModalParcial.cshtml
 |   │   ├── Index.cshtml
 │   ├── Cliente/
-|   │   ├── Crear.cshtml
-|   │   ├── Editar.cshtml
+|   │   ├── _ClienteModalPartial.cshtml
+|   │   ├── _ClienteTablePartial.cshtml
 |   │   ├── Index.cshtml
 │   ├── Home/
 |   │   ├── Index.cshtml
 |   │   ├── Provacy.cshtml
 │   ├── Producto/
-|   │   ├── Crear.cshtml
-|   │   ├── Editar.cshtml
+|   │   ├── _ProductoListPartial.cshtml
+|   │   ├── _ProductoTablePartial.cshtml
 |   │   ├── VerProducto.cshtml
 │   ├── Proveedor/
-|   │   ├── Crear.cshtml
-|   │   ├── Editar.cshtml
+|   │   ├── _ProveedorModalPartial.cshtml
+|   │   ├── _ProveedorTablePartial.cshtml
 |   │   ├── Index.cshtml
 │   ├── Venta/
 |   │   ├── Historial.cshtml
@@ -163,6 +155,7 @@ Inventario_Tienda/
 │   ├── DetalleVentaViewModel.cs
 │   ├── VentaHistorialViewModel.cs
 │   ├── VentaViewModel.cs
+|
 │── wwwroot/
 │── appsettings.json
 │── Program.cs
