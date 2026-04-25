@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Inventario_Tienda.Models.Usuario>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Clientes";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Clientes</h2>
+        <p class="page-subtitle">Gestiona los clientes registrados en la tienda.</p>
+    </div>
+
+    <div class="page-actions">
+        <button type="button" class="btn-main" id="btnNuevoCliente">Nuevo cliente</button>
+    </div>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success mb-4">
+        @TempData["Mensaje"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mb-4">
+        @TempData["Error"]
+    </div>
+}
+
+<div id="clienteTableContainer">
+    @await Html.PartialAsync("_ClienteTablePartial", Model)
+</div>
+
+<div class="modal fade" id="clienteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" id="clienteModalContent"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/cliente.js"></script>
+}

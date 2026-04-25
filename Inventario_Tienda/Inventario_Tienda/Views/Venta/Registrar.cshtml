@@ -1,0 +1,159 @@
+﻿@model Inventario_Tienda.ViewModels.VentaViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Registrar venta";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Ventas</h2>
+        <p class="page-subtitle">Registra una nueva venta y mantén el control de las transacciones.</p>
+    </div>
+</div>
+
+<div class="module-tabs">
+    <a asp-controller="Venta" asp-action="Historial" class="module-tab">Historial</a>
+    <a asp-controller="Venta" asp-action="Registrar" class="module-tab active">Nueva venta</a>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success mb-4">@TempData["Mensaje"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mb-4">@TempData["Error"]</div>
+}
+
+<form asp-action="Registrar" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="sale-layout">
+        <div class="sale-block">
+            <h4 class="mb-3">Datos de la venta</h4>
+
+            <div class="mb-3">
+                <label class="form-label">Cliente</label>
+                <select asp-for="IdCliente" asp-items="ViewBag.Clientes" class="form-select">
+                    <option value="">-- Seleccionar cliente --</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Empleado</label>
+                <select asp-for="IdEmpleado" asp-items="ViewBag.Empleados" class="form-select">
+                    <option value="">-- Seleccionar empleado --</option>
+                </select>
+            </div>
+
+            <div class="ui-card mt-4">
+                <h5 class="mb-2">Consejo</h5>
+                <p class="mb-0">
+                    Verifica las cantidades antes de registrar la venta para evitar inconsistencias en el stock.
+                </p>
+            </div>
+        </div>
+
+        <div class="sale-block">
+            <h4 class="mb-3">Detalle de productos</h4>
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.Detalles != null && Model.Detalles.Any())
+                        {
+                            @for (int i = 0; i < Model.Detalles.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Model.Detalles[i].NombreProducto
+                                        <input type="hidden" asp-for="Detalles[@i].IdProducto" />
+                                        <input type="hidden" asp-for="Detalles[@i].NombreProducto" />
+                                    </td>
+
+                                    <td>
+                                        ₡ @Model.Detalles[i].PrecioVenta.ToString("N2")
+                                        <input type="hidden" asp-for="Detalles[@i].PrecioVenta" />
+                                    </td>
+
+                                    <td>
+                                        @Model.Detalles[i].StockDisponible
+                                        <input type="hidden" asp-for="Detalles[@i].StockDisponible" />
+                                    </td>
+
+                                    <td>
+                                        <input type="number"
+                                               asp-for="Detalles[@i].Cantidad"
+                                               class="form-control cantidad-input"
+                                               min="0"
+                                               max="@Model.Detalles[i].StockDisponible"
+                                               data-precio="@Model.Detalles[i].PrecioVenta" />
+                                    </td>
+
+                                    <td>
+                                        <span class="subtotal-text">₡ @Model.Detalles[i].Subtotal.ToString("N2")</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5">
+                                    <div class="sale-empty">
+                                        No hay productos disponibles para la venta.
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="sale-summary">
+            <h4 class="mb-3">Resumen</h4>
+
+            <div class="sale-summary-row">
+                <span>Productos cargados</span>
+                <span>@(Model.Detalles != null ? Model.Detalles.Count : 0)</span>
+            </div>
+
+            <div class="sale-summary-row">
+                <span>Estado</span>
+                <span>Listo para registrar</span>
+            </div>
+
+            <div class="sale-total-box">
+                <div class="mb-2 text-muted">Total general</div>
+                <div class="sale-total">₡ <span id="totalGeneral">@Model.Total.ToString("N2")</span></div>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn-main">
+                    Registrar venta
+                </button>
+
+                <a asp-controller="Home" asp-action="Index" class="btn-outline-soft text-center">
+                    Cancelar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/js/venta.js"></script>
+}

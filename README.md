@@ -125,8 +125,8 @@ Inventario_Tienda/
 |   │   ├── _EditarCategoriaModalParcial.cshtml
 |   │   ├── Index.cshtml
 │   ├── Cliente/
-|   │   ├── Crear.cshtml
-|   │   ├── Editar.cshtml
+|   │   ├── _ClienteModalPartial.cshtml
+|   │   ├── _ClienteTablePartial.cshtml
 |   │   ├── Index.cshtml
 │   ├── Home/
 |   │   ├── Index.cshtml
@@ -136,8 +136,8 @@ Inventario_Tienda/
 |   │   ├── _ProductoTablePartial.cshtml
 |   │   ├── VerProducto.cshtml
 │   ├── Proveedor/
-|   │   ├── Crear.cshtml
-|   │   ├── Editar.cshtml
+|   │   ├── _ProveedorModalPartial.cshtml
+|   │   ├── _ProveedorTablePartial.cshtml
 |   │   ├── Index.cshtml
 │   ├── Venta/
 |   │   ├── Historial.cshtml

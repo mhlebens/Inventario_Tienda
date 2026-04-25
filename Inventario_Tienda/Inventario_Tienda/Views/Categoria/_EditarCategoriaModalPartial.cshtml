@@ -1,0 +1,32 @@
+﻿@model Inventario_Tienda.Models.Categoria
+
+<div class="modal-header">
+    <h5 class="modal-title">Editar categoría</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+</div>
+
+<form id="editarCategoriaForm">
+    @Html.AntiForgeryToken()
+
+    <div class="modal-body">
+        <input type="hidden" name="IdCategoria" value="@Model.IdCategoria" />
+
+        <div class="mb-3">
+            <label class="form-label">Nombre de la categoría</label>
+            <input type="text"
+                   name="Nombre"
+                   value="@Model.Nombre"
+                   class="form-control"
+                   required />
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn-outline-soft" data-bs-dismiss="modal">
+            Cancelar
+        </button>
+        <button type="submit" class="btn-main">
+            Guardar cambios
+        </button>
+    </div>
+</form>

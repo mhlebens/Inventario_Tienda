@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Inventario_Tienda.Models.Proveedor>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Proveedores";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Catálogo</h2>
+        <p class="page-subtitle">Administra productos, categorías y proveedores desde un mismo módulo.</p>
+    </div>
+
+    <div class="page-actions">
+        <button type="button" class="btn-main" id="btnNuevoProveedor">
+            Nuevo proveedor
+        </button>
+    </div>
+</div>
+
+<div class="module-tabs">
+    <a asp-controller="Producto" asp-action="VerProducto" class="module-tab">Productos</a>
+    <a asp-controller="Categoria" asp-action="Index" class="module-tab">Categorías</a>
+    <a asp-controller="Proveedor" asp-action="Index" class="module-tab active">Proveedores</a>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success mb-4">
+        @TempData["Mensaje"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mb-4">
+        @TempData["Error"]
+    </div>
+}
+
+<div id="proveedorTableContainer">
+    @await Html.PartialAsync("_ProveedorTablePartial", Model)
+</div>
+
+<div class="modal fade" id="proveedorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" id="proveedorModalContent"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/proveedor.js"></script>
+}

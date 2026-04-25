@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Inventario_Tienda.ViewModels.VentaHistorialViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Historial de ventas";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Ventas</h2>
+        <p class="page-subtitle">Consulta las ventas registradas y crea nuevas transacciones.</p>
+    </div>
+
+</div>
+
+<div class="module-tabs">
+    <a asp-controller="Venta" asp-action="Historial" class="module-tab active">Historial</a>
+    <a asp-controller="Venta" asp-action="Registrar" class="module-tab">Nueva venta</a>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success mb-4">
+        @TempData["Mensaje"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mb-4">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="table-container">
+    <div class="table-responsive">
+        <table class="table align-middle table-fixed-ui">
+            <thead>
+                <tr>
+                    <th style="width: 12%;">ID Venta</th>
+                    <th style="width: 26%;">Fecha</th>
+                    <th style="width: 24%;">Cliente</th>
+                    <th style="width: 24%;">Empleado</th>
+                    <th style="width: 14%;" class="text-end">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.IdCompra</td>
+                        <td>
+                            <span class="badge-date">
+                                @item.Fecha.ToString("dd/MM/yyyy HH:mm")
+                            </span>
+                        </td>
+                        <td>
+                            <span class="table-title-cell">@item.Cliente</span>
+                        </td>
+                        <td>
+                            <span class="table-title-cell">@item.Empleado</span>
+                        </td>
+                        <td class="text-end">
+                            <span class="amount-highlight">₡ @item.Total.ToString("N2")</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Panel principal</h2>
+        <p class="page-subtitle">Resumen general del sistema de inventario y ventas de la tienda de cosméticos.</p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="metric-card">
+            <div class="metric-label">Productos</div>
+            <div class="metric-value">Catálogo</div>
+            <div class="metric-helper">Administra y consulta los productos registrados.</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="metric-card">
+            <div class="metric-label">Clientes</div>
+            <div class="metric-value">Gestión</div>
+            <div class="metric-helper">Consulta y edita la información de clientes.</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="metric-card">
+            <div class="metric-label">Ventas</div>
+            <div class="metric-value">Registro</div>
+            <div class="metric-helper">Procesa ventas y revisa su historial.</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="metric-card">
+            <div class="metric-label">Proveedores</div>
+            <div class="metric-value">Control</div>
+            <div class="metric-helper">Organiza los proveedores del negocio.</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="ui-card">
+            <h4 class="mb-3">Bienvenida al sistema</h4>
+            <p>
+                Esta plataforma te permite administrar productos, categorías, proveedores, clientes y ventas
+                con una interfaz más limpia, moderna y alineada a una tienda de cosméticos.
+            </p>
+
+            <div class="d-flex gap-2 flex-wrap mt-3">
+                <a asp-controller="Producto" asp-action="VerProducto" class="btn-main">Ver productos</a>
+                <a asp-controller="Venta" asp-action="Registrar" class="btn-outline-soft">Registrar venta</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="ui-card">
+            <h4 class="mb-3">Accesos rápidos</h4>
+            <div class="d-grid gap-2">
+                <a asp-controller="Producto" asp-action="Crear" class="btn-soft text-center">Nuevo producto</a>
+                <a asp-controller="Cliente" asp-action="Index" class="btn-outline-soft text-center">Ver clientes</a>
+                <a asp-controller="Venta" asp-action="Historial" class="btn-outline-soft text-center">Historial de ventas</a>
+            </div>
+        </div>
+    </div>
+</div>

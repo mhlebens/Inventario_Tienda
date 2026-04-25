@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Inventario_Tienda.Pages
+namespace Inventario_Tienda.Views.Proveedor
 {
-    public class IndexModel : PageModel
+    public class _ProveedorTablePartialModel : PageModel
     {
         public void OnGet()
         {
-
         }
     }
 }
